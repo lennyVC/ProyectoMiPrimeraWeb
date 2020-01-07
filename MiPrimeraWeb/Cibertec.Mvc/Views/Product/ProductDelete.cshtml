@@ -1,0 +1,81 @@
+﻿@model Cibertec.Models.Products
+
+@{
+    ViewBag.Title = "ProductDelete";
+}
+
+<h2>ProductDelete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Products</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SupplierId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SupplierId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UnitPrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UnitPrice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.QuantityPerUnit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.QuantityPerUnit)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Discontinued)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Discontinued)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm("ProductDeletePost","Product"))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <div class="form-group">
+                <div class="col-md-10">
+                    <input type="text" value="@Model.ProductID" id="ProductID" name="id" readonly hidden />
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "ProductIndex")
+        </div>
+    }
+</div>

@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Cibertec.Models.Products>
+
+@{
+    ViewBag.Title = "ProductIndex";
+}
+
+<h2>ProductIndex</h2>
+
+<p>
+    @Html.ActionLink("Create New", "ProductCreate")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SupplierId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UnitPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.QuantityPerUnit)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Discontinued)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProductID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProductName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SupplierId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UnitPrice)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.QuantityPerUnit)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Discontinued)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "ProductUpdate", new { id = item.ProductID }) |
+            @Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */}) |
+            @Html.ActionLink("Delete", "ProductDelete", new { id = item.ProductID })
+        </td>
+    </tr>
+}
+
+</table>

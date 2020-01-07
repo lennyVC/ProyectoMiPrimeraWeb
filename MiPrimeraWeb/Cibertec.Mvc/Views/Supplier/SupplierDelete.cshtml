@@ -1,0 +1,96 @@
+﻿@model Cibertec.Models.Suppliers
+
+@{
+    ViewBag.Title = "SupplierDelete";
+}
+
+<h2>SupplierDelete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Suppliers</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SupplierID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SupplierID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CompanyName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompanyName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ContactName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ContactName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ContactTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ContactTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.City)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.City)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Country)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Country)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Fax)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fax)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm("SupplierDeletePost","Supplier"))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-horizontal">
+            <div class="form-group">
+                <div class="col-md-10">
+                    <input type="text" value="@Model.SupplierID" id="SupplierID" name="id" readonly hidden />
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "SupplierIndex")
+        </div>
+    }
+</div>

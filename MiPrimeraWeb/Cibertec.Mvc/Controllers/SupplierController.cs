@@ -9,32 +9,36 @@ using System.Configuration;
 using Cibertec.Repositories;
 using Cibertec.Repositories.NorthWind;
 using Cibertec.Models;
+using log4net;
+using Cibertec.Mvc.ActionFilter;
 
 namespace Cibertec.Mvc.Controllers
 {
-    public class SupplierController : Controller
+    [RoutePrefix("Supplier")]
+    public class SupplierController : BaseController
     {
-        public readonly IUnitOfWork _unit;
 
-        //public SupplierController()
-        //{
-        //    _unit = new NorthwindUnitOfWork(ConfigurationManager.ConnectionStrings["NorthwindConnection"].ToString());
-        //}
-        public SupplierController(IUnitOfWork unit)
+        public SupplierController(ILog log, IUnitOfWork unit) : base(log, unit)
         {
-            _unit = unit;
+            
         }
 
         // GET: Supplier
         public ActionResult SupplierIndex()
         {
+            _log.Info("Ejecucion de Customer Controller OK");
             return View(_unit.Suppliers.GetList());
         }
 
-        //CREATE:Supplier
-        public ActionResult SupplierCreate()
+        public ActionResult Error()
         {
-            return View();
+            throw new System.Exception("Pruebas de validacion de Error");
+        }
+
+        //CREATE:Supplier
+        public PartialViewResult SupplierCreate()
+        {
+            return PartialView("_SupplierCreate", new Suppliers());
         }
 
         [HttpPost]
@@ -46,12 +50,12 @@ namespace Cibertec.Mvc.Controllers
                 return RedirectToAction("SupplierIndex");
             }
 
-            return View();
+            return PartialView("_SupplierCreate", suppliers);
         }
 
-        public ActionResult SupplierUpdate(int id)
+        public PartialViewResult SupplierUpdate(int id)
         {
-            return View(_unit.Suppliers.GetById(id));
+            return PartialView("_SupplierUpdate", _unit.Suppliers.GetById(id));
         }
 
         [HttpPost]
@@ -64,16 +68,16 @@ namespace Cibertec.Mvc.Controllers
                 return RedirectToAction("SupplierIndex");
             }
 
-            return View(suppliers);
+            return PartialView("_SupplierUpdate", suppliers);
         }
 
-        public ActionResult SupplierDelete(int id)
+        public PartialViewResult SupplierDelete(int id)
         {
-            return View(_unit.Suppliers.GetById(id));
+            return PartialView("_SupplierDelete", _unit.Suppliers.GetById(id));
         }
 
         [HttpPost]
-        //[ActionName("Delete")] esto es para que me reconozca a traves de la vista ya que la vista llama el post
+        [ActionName("Delete")] //esto es para que me reconozca a traves de la vista ya que la vista llama el post
         public ActionResult SupplierDeletePost(int id)
         {
             var val = _unit.Suppliers.Delete(id);
@@ -83,7 +87,23 @@ namespace Cibertec.Mvc.Controllers
                 return RedirectToAction("SupplierIndex");
             }
 
-            return View();
+            return PartialView("_SupplierDelete",_unit.Suppliers.GetById(id));
+        }
+
+        [Route("SupplierList/{page:int}/{rows:int}")]
+        public PartialViewResult SupplierList(int page, int rows)
+        {
+            if (page <= 0 || rows <= 0) return PartialView(new List<Suppliers>());
+            var startRecord = ((page - 1) * rows) + 1;
+            var endRecord = page * rows;
+            return PartialView("_SupplierList", _unit.Suppliers.PageList(startRecord, endRecord));
+        }
+
+        [Route("SupplierCount/{rows:int}")]
+        public int SupplierCount(int rows)
+        {
+            var TotalRecords = _unit.Suppliers.SupplierCount();
+            return TotalRecords % rows != 0 ? (TotalRecords / rows) + 1 : TotalRecords / rows;
         }
     }
 }

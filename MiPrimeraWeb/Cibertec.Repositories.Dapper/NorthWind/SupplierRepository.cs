@@ -9,6 +9,7 @@ using Dapper;
 using Dapper.Contrib;
 using Dapper.Contrib.Extensions;
 using System.Data.SqlClient;
+using System.Data;
 
 namespace Cibertec.Repositories.Dapper.NorthWind
 {
@@ -86,6 +87,29 @@ namespace Cibertec.Repositories.Dapper.NorthWind
                                             fax = Suppliers.Fax,
                                         });
                 return Convert.ToBoolean(result);
+            }
+        }
+
+        public IEnumerable<Suppliers> PageList(int startRow, int endRow)
+        {
+            if (startRow >= endRow) return new List<Suppliers>();
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@startRow", startRow);
+                parameters.Add("@endRow", endRow);
+
+                return connection.Query<Suppliers>("dbo.uspSupplierPageList", parameters, commandType:
+                    CommandType.StoredProcedure);
+            }
+        }
+
+        public int SupplierCount()
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                return connection.ExecuteScalar<int>("Select Count(SupplierID) from dbo.Suppliers");
             }
         }
     }

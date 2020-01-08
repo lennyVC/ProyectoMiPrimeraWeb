@@ -6,70 +6,34 @@
 
 <h2>SupplierIndex</h2>
 
+@Messages.AlertMessages()
+
 <p>
-    @Html.ActionLink("Create New", "SupplierCreate")
+    <a href="#" onclick="cibertec.getModal('@Url.Action("Create")'); return false;"
+       data-toggle="modal" data-target="#modal-container" class="btn btn-success btn-sm">
+        <span class="glyphicon glyphicon-plus"> New </span>
+    </a>
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.SupplierID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CompanyName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ContactName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ContactTitle)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.City)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Country)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Phone)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Fax)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.SupplierID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CompanyName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ContactName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ContactTitle)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.City)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Country)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Phone)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Fax)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "SupplierUpdate", new { id=item.SupplierID }) |
-            @Html.ActionLink("Details", "Details", new { /*id=item.Id*/ }) |
-            @Html.ActionLink("Delete", "SupplierDelete", new { id=item.SupplierID })
-        </td>
-    </tr>
-}
+<div class="pagination"></div>
+<div class="content"></div>
+<div class="pagination"></div>
 
-</table>
+@Modal.GetModal("Supplier", "supplier.closeModal();")
+
+<script src="~/Scripts/jquery.bootpag.min.js"></script>
+<script src="~/App_JS/cibertec.js"></script>
+<script src="~/App_JS/supplier.js"></script>
+
+@*Scripts para el SignalR*@
+<script src="~/Scripts/jquery.signalR-2.4.1.js"></script>
+<script src="/signalr/hubs"></script>
+<script type="text/javascript">
+    $(function () {
+        var supplierHub = $.connection.supplierHub;
+        $.connection.hub.start().done(function () {
+            console.log("Connected to hub...");
+            console.log(supplier);
+        });
+    })
+</script>

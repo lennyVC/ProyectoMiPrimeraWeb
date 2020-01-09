@@ -32,7 +32,7 @@ namespace Cibertec.Mvc.Controllers
         // GET: Product
         public ActionResult ProductIndex()
         {
-            _log.Info("Ejecucion de Customer Controller OK");
+            _log.Info("Ejecucion de Product Controller OK");
             return View(_unit.Products.GetList());
         }
 

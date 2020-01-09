@@ -26,7 +26,7 @@ namespace Cibertec.Mvc.Controllers
         // GET: Supplier
         public ActionResult SupplierIndex()
         {
-            _log.Info("Ejecucion de Customer Controller OK");
+            _log.Info("Ejecucion de Supplier Controller OK");
             return View(_unit.Suppliers.GetList());
         }
 

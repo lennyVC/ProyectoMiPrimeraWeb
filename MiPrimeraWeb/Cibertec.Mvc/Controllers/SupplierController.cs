@@ -77,7 +77,7 @@ namespace Cibertec.Mvc.Controllers
         }
 
         [HttpPost]
-        [ActionName("Delete")] //esto es para que me reconozca a traves de la vista ya que la vista llama el post
+        //[ActionName("Delete")] //esto es para que me reconozca a traves de la vista ya que la vista llama el post
         public ActionResult SupplierDeletePost(int id)
         {
             var val = _unit.Suppliers.Delete(id);

@@ -4,7 +4,7 @@
 
 @Messages.Message("inUse", "Edit", "danger", "Este Cliente está en uso en este momento.")
 
-@using (Ajax.BeginForm("Update", new { Controller = "Supplier" },
+@using (Ajax.BeginForm("SupplierUpdate", new { Controller = "Supplier" },
                         new AjaxOptions
                         {
                             HttpMethod = "POST",

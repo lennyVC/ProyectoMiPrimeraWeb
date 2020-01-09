@@ -1,12 +1,16 @@
 ﻿@model Cibertec.Models.Suppliers
 
-@{
-    ViewBag.Title = "SupplierCreate";
-}
-
-<h2>SupplierCreate</h2>
-
-@using (Html.BeginForm())
+@using (Ajax.BeginForm("SupplierCreate", new { Controller = "Supplier" },
+                        new AjaxOptions
+                        {
+                            HttpMethod = "POST",
+                            InsertionMode = InsertionMode.Replace,
+                            UpdateTargetId = "modal-body",
+                            OnSuccess = "supplier.success('create');"
+                        },
+                        htmlAttributes: new { id = "createForm" }
+                      )
+        )
 {
     @Html.AntiForgeryToken()
 
@@ -79,10 +83,8 @@
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "SupplierIndex")
-</div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+<script type="text/javascript">
+    $(function () {
+        $.validator.unobtrusive.parse("#createForm");
+    });
+</script>

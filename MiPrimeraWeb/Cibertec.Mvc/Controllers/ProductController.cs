@@ -9,33 +9,42 @@ using Cibertec.Repositories.Dapper.NorthWind;
 using Cibertec.Models;
 using Cibertec.Repositories;
 using Cibertec.Repositories.NorthWind;
+using log4net;
+using Cibertec.Mvc.ActionFilter;
 
 
 namespace Cibertec.Mvc.Controllers
 {
-    public class ProductController : Controller
+    [RoutePrefix("Product")]
+    public class ProductController : BaseController
     {
-        public readonly IUnitOfWork _unit;
+        //public readonly IUnitOfWork _unit;
 
         //public ProductController()
         //{
         //    _unit = new NorthwindUnitOfWork(ConfigurationManager.ConnectionStrings["NorthwindConnection"].ToString());
         //}
-        public ProductController(IUnitOfWork unit)
+        public ProductController(ILog log, IUnitOfWork unit) : base(log, unit)
         {
-            _unit = unit;
+
         }
 
         // GET: Product
         public ActionResult ProductIndex()
         {
+            _log.Info("Ejecucion de Customer Controller OK");
             return View(_unit.Products.GetList());
         }
 
-        //CREATE:Product
-        public ActionResult ProductCreate()
+        public ActionResult Error()
         {
-            return View();
+            throw new System.Exception("Pruebas de validacion de Error");
+        }
+
+        //CREATE:Product
+        public PartialViewResult ProductCreate()
+        {
+            return PartialView("_ProductCreate", new Products());
         }
 
         [HttpPost]
@@ -47,12 +56,12 @@ namespace Cibertec.Mvc.Controllers
                 return RedirectToAction("ProductIndex");
             }
 
-            return View();
+            return PartialView("_ProductCreate", product);
         }
 
-        public ActionResult ProductUpdate(int id)
+        public PartialViewResult ProductUpdate(int id)
         {
-            return View(_unit.Products.GetById(id));
+            return PartialView("_ProductUpdate",_unit.Products.GetById(id));
         }
         
         [HttpPost]
@@ -65,16 +74,16 @@ namespace Cibertec.Mvc.Controllers
                 return RedirectToAction("ProductIndex");
             }
 
-            return View(product);
+            return PartialView("_ProductUpdate", product);
         }
 
-        public ActionResult ProductDelete(int id)
+        public PartialViewResult ProductDelete(int id)
         {
-            return View(_unit.Products.GetById(id));
+            return PartialView("_ProductDelete", _unit.Products.GetById(id));
         }
 
         [HttpPost]
-        //[ActionName("Delete")] esto es para que me reconozca a traves de la vista ya que la vista llama el post
+        //[ActionName("Delete")] //esto es para que me reconozca a traves de la vista ya que la vista llama el post
         public ActionResult ProductDeletePost(int id)
         {
             var val = _unit.Products.Delete(id);
@@ -84,7 +93,23 @@ namespace Cibertec.Mvc.Controllers
                 return RedirectToAction("ProductIndex");
             }
 
-            return View();
+            return PartialView("_ProductDelete", _unit.Products.GetById(id));
+        }
+
+        [Route("ProductList/{page:int}/{rows:int}")]
+        public PartialViewResult ProductList(int page, int rows)
+        {
+            if (page <= 0 || rows <= 0) return PartialView(new List<Products>());
+            var startRecord = ((page - 1) * rows) + 1;
+            var endRecord = page * rows;
+            return PartialView("_ProductList", _unit.Products.PageList(startRecord, endRecord));
+        }
+
+        [Route("ProductCount/{rows:int}")]
+        public int SupplierCount(int rows)
+        {
+            var TotalRecords = _unit.Products.ProductCount();
+            return TotalRecords % rows != 0 ? (TotalRecords / rows) + 1 : TotalRecords / rows;
         }
     }
 }

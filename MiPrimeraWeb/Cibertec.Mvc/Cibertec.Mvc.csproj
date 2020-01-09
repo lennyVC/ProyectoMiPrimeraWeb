@@ -182,6 +182,7 @@
     </Compile>
     <Compile Include="Models\RegisterUsersViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
+    <Compile Include="ProductHub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="SupplierHub.cs" />
@@ -189,6 +190,7 @@
   <ItemGroup>
     <Content Include="App_JS\cibertec.js" />
     <Content Include="App_JS\customer.js" />
+    <Content Include="App_JS\product.js" />
     <Content Include="App_JS\supplier.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -255,6 +257,9 @@
     <Content Include="Views\Customer\_Delete.cshtml" />
     <Content Include="Views\Supplier\_SupplierList.cshtml" />
     <Content Include="Views\Supplier\_SupplierUpdate.cshtml" />
+    <Content Include="Views\Supplier\_SupplierCreate.cshtml" />
+    <Content Include="Views\Supplier\_SupplierDelete.cshtml" />
+    <Content Include="Views\Product\_ProductList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

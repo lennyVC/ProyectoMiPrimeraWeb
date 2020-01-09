@@ -1,16 +1,16 @@
-﻿(function (supplier) {
-    supplier.success = successReload;
+﻿(function (product) {
+    product.success = successReload;
 
-    supplier.pages = 1;
-    supplier.rowSize = 15;
+    product.pages = 1;
+    product.rowSize = 15;
     /* Atributos para el manejo de hub */
-    supplier.hub = {};
-    supplier.ids = [];
-    supplier.recordInUse = false;
+    product.hub = {};
+    product.ids = [];
+    product.recordInUse = false;
 
-    supplier.addSupplier = addSupplierId;
-    supplier.removeHubSupplier = removeSupplierId;
-    supplier.validate = validate;
+    product.addProduct = addProductId;
+    product.removeHubProduct = removeProductId;
+    product.validate = validate;
 
     $(function () {
         connectToHub();
@@ -19,7 +19,7 @@
 
     //init();
 
-    return supplier;
+    return product;
 
     function successReload(option) {
         cibertec.closeModal(option);
@@ -28,7 +28,7 @@
         activePages = elements[1].children;
         console.log(activePages[0].text);
         //init();
-        //getsuppliers(activePages[0].text);
+        //getproducts(activePages[0].text);
         lstTableRows = $('.table >tbody >tr').length - 1;
         console.log(lstTableRows);
 
@@ -39,16 +39,16 @@
         else
             init(activePages[0].text);
 
-        //getsuppliers(activePages[0].text);
+        //getproducts(activePages[0].text);
 
     }
 
     function init(numPage) {
-        $.get('/Supplier/SupplierCount/' + supplier.rowSize,
+        $.get('/Product/ProductCount/' + product.rowSize,
             function (data) {
-                supplier.pages = data;
+                product.pages = data;
                 $('.pagination').bootpag({
-                    total: supplier.pages,
+                    total: product.pages,
                     page: numPage,
                     maxVisible: 5,
                     leaps: true,
@@ -63,14 +63,14 @@
                     lastClass: 'last',
                     firstClass: 'first'
                 }).on('page', function (event, num) {
-                    getsuppliers(num);
+                    getproducts(num);
                 });
-                getsuppliers(numPage);
+                getproducts(numPage);
             });
     }
 
-    function getsuppliers(cantPages) {
-        var url = '/Supplier/SupplierList/' + cantPages + '/' + supplier.rowSize;
+    function getproducts(cantPages) {
+        var url = '/Product/ProductList/' + cantPages + '/' + product.rowSize;
 
         $.get(url, function (data) {
             $('.content').html(data);
@@ -78,32 +78,32 @@
         });
     }
 
-    function addSupplierId(id) {
-        supplier.hub.server.addSupplierId(id);
+    function addProductId(id) {
+        product.hub.server.addProductId(id);
     }
 
-    function removeSupplierId(id) {
-        supplier.hub.server.removeSupplierId(id);
+    function removeProductId(id) {
+        product.hub.server.removeProductId(id);
     }
 
     function connectToHub() {
-        supplier.hub = $.connection.supplierHub;
-        supplier.hub.client.supplierStatus = supplierStatus; //este metodo lo llama desde el cliente al servidor
+        product.hub = $.connection.productHub;
+        product.hub.client.productStatus = productStatus; //este metodo lo llama desde el cliente al servidor
     }
 
-    function supplierStatus(supplierIds) {
-        console.log(supplierIds);
-        supplier.ids = supplierIds;
+    function productStatus(productIds) {
+        console.log(productIds);
+        product.ids = productIds;
     }
 
     function validate(id) {
-        supplier.recordInUse = (supplier.ids.indexOf(id) > -1);
-        if (supplier.recordInUse) {
+        product.recordInUse = (product.ids.indexOf(id) > -1);
+        if (product.recordInUse) {
             $('#inUse').removeClass('hidden');
             $('#btn-save').html("");
         }
     }
 
-})(window.supplier = window.supplier || {});
+})(window.product = window.product || {});
 
 

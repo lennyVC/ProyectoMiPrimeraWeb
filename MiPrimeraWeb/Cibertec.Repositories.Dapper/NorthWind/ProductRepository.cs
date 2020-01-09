@@ -9,6 +9,7 @@ using Cibertec.Repositories.NorthWind;
 using Dapper;
 using Dapper.Contrib;
 using Dapper.Contrib.Extensions;
+using System.Data;
 
 namespace Cibertec.Repositories.Dapper.NorthWind
 {
@@ -79,6 +80,29 @@ namespace Cibertec.Repositories.Dapper.NorthWind
                                                 discontinued = products.Discontinued,
                                             });
                 return Convert.ToBoolean(result);
+            }
+        }
+
+        public IEnumerable<Products> PageList(int startRow, int endRow)
+        {
+            if (startRow >= endRow) return new List<Products>();
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@startRow", startRow);
+                parameters.Add("@endRow", endRow);
+
+                return connection.Query<Products>("dbo.uspProductPageList", parameters, commandType:
+                    CommandType.StoredProcedure);
+            }
+        }
+
+        public int ProductCount()
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                return connection.ExecuteScalar<int>("Select Count(ProductID) from dbo.Products");
             }
         }
     }

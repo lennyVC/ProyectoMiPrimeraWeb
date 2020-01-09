@@ -6,58 +6,35 @@
 
 <h2>ProductIndex</h2>
 
+@Messages.AlertMessages()
+
 <p>
-    @Html.ActionLink("Create New", "ProductCreate")
+    <a href="#" onclick="cibertec.getModal('@Url.Action("ProductCreate")'); return false;"
+       data-toggle="modal" data-target="#modal-container" class="btn btn-success btn-sm">
+        <span class="glyphicon glyphicon-plus"> New </span>
+    </a>
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ProductID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ProductName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SupplierId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UnitPrice)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.QuantityPerUnit)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Discontinued)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ProductID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ProductName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SupplierId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UnitPrice)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.QuantityPerUnit)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Discontinued)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "ProductUpdate", new { id = item.ProductID }) |
-            @Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */}) |
-            @Html.ActionLink("Delete", "ProductDelete", new { id = item.ProductID })
-        </td>
-    </tr>
-}
+<div class="pagination"></div>
+<div class="content"></div>
+<div class="pagination"></div>
 
-</table>
+@Modal.GetModal("Product", "product.closeModal();")
+
+<script src="~/Scripts/jquery.bootpag.min.js"></script>
+<script src="~/App_JS/cibertec.js"></script>
+<script src="~/App_JS/product.js"></script>
+
+@*Scripts para el SignalR*@
+<script src="~/Scripts/jquery.signalR-2.4.1.js"></script>
+<script src="/signalr/hubs"></script>
+<script type="text/javascript">
+    $(function () {
+        var productHub = $.connection.productHub;
+        $.connection.hub.start().done(function () {
+            console.log("Connected to hub...");
+            console.log(product);
+        });
+    })
+</script>
+

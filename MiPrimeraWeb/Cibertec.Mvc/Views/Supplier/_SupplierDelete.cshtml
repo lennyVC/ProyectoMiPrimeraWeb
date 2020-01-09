@@ -1,17 +1,16 @@
-﻿@model Cibertec.Models.Customers
+﻿@model Cibertec.Models.Suppliers
 
-<h2>Delete</h2>
-
+<h2>Delete Supplier</h2>
 <div>
-    <h4>Customers</h4>
+    <h4>Suppliers</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.CustomerID)
+            @Html.DisplayNameFor(model => model.SupplierID)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.CustomerID)
+            @Html.DisplayFor(model => model.SupplierID)
         </dd>
 
         <dt>
@@ -28,6 +27,14 @@
 
         <dd>
             @Html.DisplayFor(model => model.ContactName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ContactTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ContactTitle)
         </dd>
 
         <dt>
@@ -54,23 +61,29 @@
             @Html.DisplayFor(model => model.Phone)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.Fax)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fax)
+        </dd>
+
     </dl>
 
     @Messages.Message("inUse", "Delete", "danger", "Este Cliente está en uso en este momento.")
 
-    @* El Delete es el nombre del metodo de mi controlador y el Customer es el nombre de mi controlador *@
-    @using (Ajax.BeginForm("Delete", new { Controller = "Customer" },
+    @using (Ajax.BeginForm("SupplierDeletePost", new { Controller = "Supplier" },
                         new AjaxOptions
                         {
                             HttpMethod = "POST",
                             InsertionMode = InsertionMode.Replace,
                             UpdateTargetId = "modal-body",
-                            OnSuccess = "customer.success('delete');"
+                            OnSuccess = "supplier.success('delete');"
                         },
                         htmlAttributes: new { id = "deleteForm" }
                       )
         )
-
     {
         @Html.AntiForgeryToken()
 
@@ -84,13 +97,12 @@
     $(function () {
         $.validator.unobtrusive.parse("#deleteForm");
         $('#inUse').addClass('hidden');
-        customer.addCustomer("@Model.CustomerID");
-        customer.validate("@Model.CustomerID");
+        supplier.addSupplier("@Model.SupplierID");
+        supplier.validate("@Model.SupplierID");
     });
 
-    customer.closeModal = function () {
-        if (!customer.recordInUse)
-            customer.removeHubCustomer("@Model.CustomerID");
+    supplier.closeModal = function () {
+        if (!supplier.recordInUse)
+            supplier.removeHubSupplier("@Model.SupplierID");
     };
 </script>
-

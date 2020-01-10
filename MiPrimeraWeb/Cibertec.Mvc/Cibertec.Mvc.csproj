@@ -260,6 +260,9 @@
     <Content Include="Views\Supplier\_SupplierCreate.cshtml" />
     <Content Include="Views\Supplier\_SupplierDelete.cshtml" />
     <Content Include="Views\Product\_ProductList.cshtml" />
+    <Content Include="Views\Product\_ProductCreate.cshtml" />
+    <Content Include="Views\Product\_ProductUpdate.cshtml" />
+    <Content Include="Views\Product\_ProductDelete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
